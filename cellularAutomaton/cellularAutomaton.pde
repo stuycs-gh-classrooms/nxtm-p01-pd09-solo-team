@@ -33,7 +33,7 @@ void keyPressed() {
   if (key == 's') {
     playing = true;
   } // start the game
-  if (key == 'r') {
+  if (key == 'b') {
     for (int r = 0; r < dish.cols; r++) {
       for (int c = 0; c < dish.rows; c++) {
         if (c >= 0 && c < dish.cols && r >= 0 && r < dish.rows) {
@@ -44,8 +44,11 @@ void keyPressed() {
       }
     }
   } // reset whole thing
-  if (key == ' ') {
+  if (key == 'r') {
     dish.dens(d);
     playing = false;
   } // reset/randomize grid
+  if (key == ' ') {
+    playing = false;
+  } // pause grid
 } // user can start game
