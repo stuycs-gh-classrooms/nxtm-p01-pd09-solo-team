@@ -1,6 +1,7 @@
 Cell dish;
 int sz = 10;
 float d = 0.3;
+boolean playing = false; // seperate before game starts and after
 
 void setup() {
   size(500, 500);
@@ -9,86 +10,42 @@ void setup() {
 
 void draw() {
   background(255);
-  dish.update();
+  if (playing == true) {
+    dish.update();
+  }
   dish.display();
 }
 
-
-
-class Cell {
-  int cols, rows;         
-  int cellSize;
-  int[][] grid;
-  int[][] nextGrid;
-  int live = 1;
-  int dead = 0;
-
-  Cell(int numCols, int numRows, int cs, float density) {
-    cols = numCols;
-    rows = numRows;
-    cellSize = cs;
-    grid = new int[cols][rows];
-    nextGrid = new int[cols][rows];
-    dens(density);
+void mousePressed() {
+  if (playing == false) {
+    // since each cell is sz wide/tall, we can just divide the x/y coords of mouse to get row/col
+    int c = mouseX/sz;
+    int r = mouseY/sz;
+    if (c >= 0 && c < dish.cols && r >= 0 && r < dish.rows && dish.grid[c][r] == 0) {
+      dish.grid[c][r] = 1;
+    } else if (c >= 0 && c < dish.cols && r >= 0 && r < dish.rows && dish.grid[c][r] == 1) {
+      dish.grid[c][r] = 0;
+    }
   }
+} // user can click a cell to life
 
-  void dens(float density) {
-    for (int r = 0; r < cols; r++) {
-      for (int c = 0; c < rows; c++) {
-        if (random(2) > density) {
-          grid[r][c] = dead; 
-        }else{
-          grid[r][c] = live;
+void keyPressed() {
+  if (key == 's') {
+    playing = true;
+  } // start the game
+  if (key == 'r') {
+    for (int r = 0; r < dish.cols; r++) {
+      for (int c = 0; c < dish.rows; c++) {
+        if (c >= 0 && c < dish.cols && r >= 0 && r < dish.rows) {
+          if (dish.grid[c][r] != 0) {
+            dish.grid[c][r] = 0;
+          }
         }
       }
     }
-  }
-
-  int countNeighbors(int x, int y) {
-    int sum = 0;
-    for (int r = -1; r <= 1; r++) {
-      for (int c = -1; c <= 1; c++) {
-        if (!(r == 0 && c == 0)) {
-          int nx = (x + r + cols) % cols;
-          int ny = (y + c + rows) % rows;
-          sum += grid[nx][ny];
-        }
-      }
-    }
-    return sum;
-  }
-
-  void display() {
-    for (int r = 0; r < cols; r++) {
-      for (int c = 0; c < rows; c++) {
-        if (grid[r][c] == live) {
-          fill(255);
-        }else if (grid[r][c] == dead){ 
-          fill(0);
-        }
-        noStroke();
-        rect(r * cellSize, c * cellSize, cellSize, cellSize);
-      }
-    }
-  }
-  
-  int conway(int state, int neighbors) {
-      if ((state == live && (neighbors == 2 || neighbors == 3)) ||
-          (state == dead && neighbors == 3)) {
-        return 1;
-      }return 0;
-  }
-
-  void update() {
-    for (int r = 0; r < cols; r++) {
-      for (int c = 0; c < rows; c++) {
-        int neighbors = countNeighbors(r, c);
-        nextGrid[r][c] = conway(grid[r][c], neighbors);
-      }
-    }
-    int[][] buffer = grid;
-    grid = nextGrid;
-    nextGrid = buffer;
-  }
-  
-}
+  } // reset whole thing
+  if (key == ' ') {
+    dish.dens(d);
+    playing = false;
+  } // reset/randomize grid
+} // user can start game
