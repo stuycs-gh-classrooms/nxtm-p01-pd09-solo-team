@@ -32,8 +32,8 @@ class Cell {
     for (int r = -1; r <= 1; r++) {
       for (int c = -1; c <= 1; c++) {
         if (!(r == 0 && c == 0)) {
-          int nx = (x + r + cols) % cols;
-          int ny = (y + c + rows) % rows;
+          int nx = abs((x + r) % cols);
+          int ny = abs((y + c) % rows);
           sum += grid[nx][ny];
         }
       }
