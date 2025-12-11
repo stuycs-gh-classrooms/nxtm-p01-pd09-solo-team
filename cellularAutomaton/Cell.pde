@@ -41,6 +41,21 @@ class Cell {
     return sum;
   }
 
+//funny NW gliding
+  int countNW(int x, int y) {
+    int sum = 0;
+    for (int r = 0; r <= 2; r++) {
+      for (int c = 0; c <= 2; c++) {
+        if (!(r == 1 && c == 1)) {
+          int nx = ((x + r) % cols);
+          int ny = ((y + c) % rows);
+          sum += grid[nx][ny];
+        }
+      }
+    }
+    return sum;
+  }
+
   void display() {
     for (int r = 0; r < cols; r++) {
       for (int c = 0; c < rows; c++) {
@@ -62,7 +77,7 @@ class Cell {
       }return 0;
   }
 
-  void update() {
+  void nextGen() {
     for (int r = 0; r < cols; r++) {
       for (int c = 0; c < rows; c++) {
         int neighbors = countNeighbors(r, c);

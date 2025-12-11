@@ -11,7 +11,7 @@ void setup() {
 void draw() {
   background(255);
   if (playing == true) {
-    dish.update();
+    dish.nextGen();
   }
   dish.display();
 }
@@ -51,4 +51,7 @@ void keyPressed() {
   if (key == ' ') {
     playing = false;
   } // pause grid
+  if (key == '1') {
+    dish.nextGen();
+  }
 } // user can start game
