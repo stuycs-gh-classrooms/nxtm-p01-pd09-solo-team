@@ -2,10 +2,12 @@ Cell dish;
 int sz = 10;
 float d = 0.3;
 boolean playing = false; // seperate before game starts and after
+boolean PINKMODE;
 
 void setup() {
   size(500, 500);
   dish = new Cell(width/sz, height/sz, sz, d);
+  PINKMODE = false;
 }
 
 void draw() {
@@ -49,9 +51,21 @@ void keyPressed() {
     playing = false;
   } // reset/randomize grid
   if (key == ' ') {
-    playing = false;
+    if (playing == true) {
+      playing = false;
+    } else if (playing == false) {
+      playing = true;
+    }
   } // pause grid
   if (key == '1') {
     dish.nextGen();
+  }
+  if (key == 'p') {
+    if (PINKMODE == false) {
+      PINKMODE = true;
+    }
+    else if (PINKMODE == true) {
+      PINKMODE = false;
+    }
   }
 } // user can start game

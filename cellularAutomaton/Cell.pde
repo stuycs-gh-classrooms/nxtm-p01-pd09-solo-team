@@ -1,5 +1,5 @@
 class Cell {
-  int cols, rows;         
+  int cols, rows;
   int cellSize;
   int[][] grid;
   int[][] nextGrid;
@@ -19,8 +19,8 @@ class Cell {
     for (int r = 0; r < cols; r++) {
       for (int c = 0; c < rows; c++) {
         if (random(2) > density) {
-          grid[r][c] = dead; 
-        }else{
+          grid[r][c] = dead;
+        } else {
           grid[r][c] = live;
         }
       }
@@ -41,7 +41,7 @@ class Cell {
     return sum;
   }
 
-//funny NW gliding
+  //funny NW gliding
   int countNW(int x, int y) {
     int sum = 0;
     for (int r = 0; r <= 2; r++) {
@@ -61,7 +61,10 @@ class Cell {
       for (int c = 0; c < rows; c++) {
         if (grid[r][c] == live) {
           fill(255);
-        }else if (grid[r][c] == dead){ 
+          if (PINKMODE == true) {
+            fill(#FFC0CB);
+          }
+        } else if (grid[r][c] == dead) {
           fill(0);
         }
         noStroke();
@@ -69,12 +72,18 @@ class Cell {
       }
     }
   }
-  
+
   int conway(int state, int neighbors) {
-      if ((state == live && (neighbors == 2 || neighbors == 3)) ||
-          (state == dead && neighbors == 3)) {
+    if ((state == live && (neighbors == 2 || neighbors == 3)) ||
+      (state == dead && neighbors == 3)) {
+      return 1;
+    } else if (PINKMODE == true) {
+      if ((state == live && (neighbors == 4 || neighbors == 2)) ||
+        (state == live && neighbors == 3)) {
         return 1;
-      }return 0;
+      }
+    }
+    return 0;
   }
 
   void nextGen() {
@@ -88,5 +97,4 @@ class Cell {
     grid = nextGrid;
     nextGrid = buffer;
   }
-  
 }
