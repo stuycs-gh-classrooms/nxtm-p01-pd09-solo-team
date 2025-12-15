@@ -110,17 +110,17 @@ class Cell {
 
 //general formula ?
 
-  int birthMin(int min, int neighbors) {
+int birthMin(int min, int neighbors) {
     int[] bmin = bMin;
     for (r=0; r< bMin.length; r++) {
-      if (neighbors >= bmin[r]) {
+      if (neighbors >= bmin[r]) { 
         return 1;
       }
       return 0;
       int sum;
       sum+= bmin[r];
     }
-    if (sum == bmin.length) {
+    if (sum >= 1) {
       return 1;
     }return 0;
   }
@@ -135,7 +135,7 @@ class Cell {
       int sum;
       sum+= bmax[r];
     }
-    if (sum == bmax.length) {
+    if (sum >= 1) {
       return 1;
     }return 0;
   }
@@ -150,7 +150,7 @@ class Cell {
       int sum;
       sum+= smin[r];
     }
-    if (sum == smin.length) {
+    if (sum >= 1) {
       return 1;
     }return 0;
   }
@@ -165,7 +165,7 @@ class Cell {
       int sum;
       sum+= smax[r];
     }
-    if (sum == smax.length) {
+    if (sum >= 1) {
       return 1;
     }return 0;
   }
