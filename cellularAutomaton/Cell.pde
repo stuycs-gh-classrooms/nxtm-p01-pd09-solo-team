@@ -7,10 +7,8 @@ class Cell {
   int live = 1;
   int dead = 0;
 //rules
-  int[] bMin;
-  int[] bMax;
-  int[] sMin;
-  int[] sMax;
+  int[] b;
+  int[] s;
 
   Cell(int numCols, int numRows, int cs, float density) {
     cols = numCols;
@@ -108,88 +106,47 @@ class Cell {
     nextGrid = buffer;
   }
 
-//general formula ?
+//general formula ? not sure if it works
 
-int birthMin(int min, int neighbors) {
-    int[] bmin = bMin;
-    for (r=0; r< bMin.length; r++) {
-      if (neighbors >= bmin[r]) { 
+int birth(int[] num, int neighbors) {
+    int[] bnum = b;
+    for (r=0; r< b.length; r++) {
+      if (neighbors == bnum[r]) { 
         return 1;
       }
       return 0;
       int sum;
-      sum+= bmin[r];
+      sum+= bnum[r];
     }
     if (sum >= 1) {
       return 1;
     }return 0;
   }
   
-  int birthMax(int max, int neighbors) {
-    int[] bmax = bMax;
-    for (r=0; r< bMin.length; r++) {
-      if (neighbors <= bmax[r]) {
+  int survive(int[] num, int neighbors) {
+    int[] snum = s;
+    for (r=0; r< b.length; r++) {
+      if (neighbors >= s[r]) {
         return 1;
-      }
-      return 0;
+      }return 0;
       int sum;
-      sum+= bmax[r];
+      sum+= snum[r];
     }
     if (sum >= 1) {
       return 1;
     }return 0;
   }
   
-  int surviveMin(int min, int neighbors) {
-    int[] smin = sMin;
-    for (r=0; r< sMin.length; r++) {
-      if (neighbors >= smin[r]) {
-        return 1;
-      }
-      return 0;
-      int sum;
-      sum+= smin[r];
-    }
-    if (sum >= 1) {
-      return 1;
-    }return 0;
-  }
-  
-  int surviveMax(int max, int neighbors) {
-    int[] smax = sMax;
-    for (r=0; r< sMax.length; r++) {
-      if (neighbors <= smax[r]) {
-        return 1;
-      }
-      return 0;  
-      int sum;
-      sum+= smax[r];
-    }
-    if (sum >= 1) {
-      return 1;
-    }return 0;
-  }
-  
-  int birth(int min, int max, int nb) {
-    if (birthMin(min, nb) + birthMax(max, nb) == 2) {
-      return 1;
-    }return 0;
-  }
-  
-  int survive(int min, int max, int nb) {
-    if (surviveMin(min, nb) + surviveMax(max, nb) == 2) {
-      return 1;
-    }return 0;
-  }
-  
-  int gameRule(int state, int bmin, int bmax, int smin, int smax, int nb) {
+  int gameRule(int state, int[] b, int[] s, int nb) {
     int b;
     int s;
     if (state == live) {
-      b = birth(bmin, bmax, nb);
+      b = birth(b, nb);
+      return b;
     } 
     if (state == dead) {
-      s = survive(smin, smax, nb);
+      s = survive(s, nb);
+      return s;
     }
     return 0;
   }  
@@ -198,7 +155,7 @@ int birthMin(int min, int neighbors) {
     for (int r = 0; r < cols; r++) {
       for (int c = 0; c < rows; c++) {
         int neighbors = countNeighbors(r, c);
-        nextGrid[r][c] = gameRule(grid[r][c], bMin, bMax, sMin, sMax, neighbors);
+        nextGrid[r][c] = gameRule(grid[r][c], b, s, neighbors);
       }
     }
     int[][] buffer = grid;
