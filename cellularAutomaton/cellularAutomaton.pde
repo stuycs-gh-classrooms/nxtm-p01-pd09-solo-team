@@ -4,6 +4,10 @@ float d = 0.3;
 boolean playing = false; // seperate before game starts and after
 boolean PINKMODE;
 
+int[] bRules;
+int[] sRules;
+int preset;
+
 void setup() {
   size(500, 500);
   dish = new Cell(width/sz, height/sz, sz, d);
@@ -16,6 +20,13 @@ void draw() {
     dish.nextGen();
   }
   dish.display();
+}
+
+void gamemode() {
+  if (preset == dayAndNight) {
+bRules = {3, 6, 7, 8};
+sRules = {3, 4, 6,7,8}; 
+  }
 }
 
 void mousePressed() {
@@ -68,4 +79,5 @@ void keyPressed() {
       PINKMODE = false;
     }
   }
+  
 } // user can start game
